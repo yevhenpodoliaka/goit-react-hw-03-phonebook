@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import Contactlist from './ContactList/ContactList';
 import Filter from './Filter/Filter';
+
 class App extends Component {
   state = {
     contacts: [
@@ -13,6 +14,20 @@ class App extends Component {
     ],
     filter: '',
   };
+  componentDidMount() {
+    const contactsStorage = JSON.parse(localStorage.getItem('contacts'))
+    if (contactsStorage) {
+      this.setState({contacts:contactsStorage})
+    }
+   
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const {contacts}=this.state
+    if (prevState.contacts !==contacts) {
+      localStorage.setItem('contacts',JSON.stringify(contacts))
+    }
+
+  } 
   addContact = contact => {
     const { contacts } = this.state;
     const name=contact.name.toLowerCase()
